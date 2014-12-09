@@ -1,7 +1,8 @@
 FROM fedora:20
 MAINTAINER aj@junglistheavy.industries
 ENV container docker
-RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs sudo openssh-server openssh-clients curl
+# RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs
+RUN yum -y install systemd systemd-libs sudo openssh-server openssh-clients curl
 RUN yum clean all
 RUN sed -i '/UsePAM/d'  /etc/ssh/sshd_config
 RUN echo 'UsePrivilegeSeparation no' >> /etc/ssh/sshd_config
