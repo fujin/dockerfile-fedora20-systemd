@@ -1,7 +1,12 @@
 FROM fedora:20
 MAINTAINER aj@junglistheavy.industries
 ENV container docker
-RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs
+RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs sudo openssh-server openssh-clients curl
+RUN yum clean all
+RUN sed -i '/UsePAM/d'  /etc/ssh/sshd_config
+RUN echo 'UsePrivilegeSeparation no' >> /etc/ssh/sshd_config
+RUN echo 'UsePAM no' >> /etc/ssh/sshd_config
+RUN systemctl enable sshd
 RUN yum -y update; yum clean all; \
 (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
 rm -f /lib/systemd/system/multi-user.target.wants/*;\
